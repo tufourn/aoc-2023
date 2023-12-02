@@ -56,28 +56,22 @@ fn process_line_2(line: &str) -> u32 {
     let mut green: u32 = 0;
     let mut blue: u32 = 0;
 
-    let mut parts = line.split(": ");
-    let _ = parts.next();
+    let mut it = line
+        .split_whitespace()
+        .skip(2)
+        .map(|s| {
+            s.trim_matches(|c| c == ',' || c == ':' || c == ';')
+        });
 
-    if let Some(sets) = parts.next() {
-        let mut it = sets.split(";").map(|set| set.trim());
-        while let Some(set) = it.next() {
-            let mut colors = set.split(", ");
-            while let Some(color) = colors.next() {
-                let mut parts = color.split_whitespace();
-                if let Some(num_str) = parts.next() {
-                    if let Ok(num) = num_str.parse::<u32>() {
-                        if let Some(col) = parts.next() {
-                            if col == "red" && num > red {
-                                red = num;
-                            } else if col == "green" && num > green {
-                                green = num;
-                            } else if col == "blue" && num > blue {
-                                blue = num;
-                            }
-                        }
-                    }
-                }
+    while let Some(s) = it.next() {
+        let num = s.parse::<u32>().unwrap();
+        if let Some(color) = it.next() {
+            if color == "red" && num > red {
+                red = num;
+            } else if color == "green" && num > green{
+                green = num;
+            } else if color == "blue" && num > blue{
+                blue = num
             }
         }
     }
@@ -97,6 +91,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(2286));
     }
 }
