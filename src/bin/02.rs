@@ -5,7 +5,7 @@ const GREEN: u32 = 13;
 const BLUE: u32 = 14;
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let result = input.lines().map(|line| process_line_1(line)).sum();
+    let result = input.lines().map(process_line_1).sum();
 
     Some(result)
 }
@@ -24,21 +24,18 @@ fn process_line_1(line: &str) -> u32 {
 
     while let Some(s) = it.next() {
         let num = s.parse::<u32>().unwrap();
-        if let Some(color) = it.next() {
-            if color == "red" && num > RED {
-                result = 0;
-            } else if color == "green" && num > GREEN {
-                result = 0;
-            } else if color == "blue" && num > BLUE {
-                result = 0;
-            }
+        result = match it.next() {
+            Some("red") if num > RED => 0,
+            Some("green") if num > GREEN => 0,
+            Some("blue") if num > BLUE => 0,
+            _ => result,
         }
     }
     result
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    let result = input.lines().map(|line| process_line_2(line)).sum();
+    let result = input.lines().map(process_line_2).sum();
 
     Some(result)
 }

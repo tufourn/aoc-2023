@@ -33,7 +33,7 @@ pub fn part_one(input: &str) -> Option<u32> {
 
                     let sym = lines[new_row as usize][new_col as usize];
 
-                    if !sym.is_digit(10) && sym != '.' {
+                    if !sym.is_ascii_digit() && sym != '.' {
                         is_engine = true;
                     }
                 }
