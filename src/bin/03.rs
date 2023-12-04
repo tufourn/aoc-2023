@@ -75,13 +75,13 @@ pub fn part_two(input: &str) -> Option<u32> {
                     let col = (c as i32 + col_offset).clamp(0, col_num as i32 - 1) as usize;
                     if lines[row][col] == '*' {
                         gears_around_num.insert((row, col));
-                        gears.entry((row, col)).or_insert_with(Vec::new);
+                        gears.entry((row, col)).or_default();
                     }
                 }
             } else {
                 if num > 0 && !gears_around_num.is_empty() {
                     gears_around_num.iter().for_each(|&gear| {
-                        gears.entry(gear).or_insert_with(Vec::new).push(num);
+                        gears.entry(gear).or_default().push(num);
                     });
                     gears_around_num.clear();
                 }
