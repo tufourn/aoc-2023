@@ -2,17 +2,17 @@ use core::str::Lines;
 
 advent_of_code::solution!(5);
 
-pub fn part_one(input: &str) -> Option<u32> {
+pub fn part_one(input: &str) -> Option<u64> {
     let mut lines: Lines = input.lines();
 
-    let seeds: Vec<u32> = lines
+    let seeds: Vec<u64> = lines
         .next()
         .unwrap()
         .split(": ")
         .nth(1)
         .unwrap()
         .split(' ')
-        .map(|n| n.parse::<u32>().unwrap())
+        .map(|n| n.parse::<u64>().unwrap())
         .collect();
     lines.next();
     lines.next();
@@ -25,7 +25,7 @@ pub fn part_one(input: &str) -> Option<u32> {
     let temp_to_humid = get_bounds(&mut lines);
     let humid_to_location = get_bounds(&mut lines);
 
-    let mut min_location = u32::MAX;
+    let mut min_location = u64::MAX;
 
     for seed in seeds {
         let soil = get_dest(seed, &seed_to_soil);
@@ -44,15 +44,15 @@ pub fn part_one(input: &str) -> Option<u32> {
     Some(min_location)
 }
 
-fn get_bounds(lines: &mut Lines) -> Vec<(u32, u32, u32)> {
-    let mut result: Vec<(u32, u32, u32)> = Vec::new();
+fn get_bounds(lines: &mut Lines) -> Vec<(u64, u64, u64)> {
+    let mut result: Vec<(u64, u64, u64)> = Vec::new();
     let lines_nonempty: Vec<&str> = lines.take_while(|line| !line.is_empty()).collect();
 
     for line in lines_nonempty {
         if !line.is_empty() {
-            let line_num: Vec<u32> = line
+            let line_num: Vec<u64> = line
                 .split_ascii_whitespace()
-                .map(|n| n.parse::<u32>().unwrap())
+                .map(|n| n.parse::<u64>().unwrap())
                 .collect();
             result.push((line_num[1], line_num[0], line_num[2]));
         } else {
@@ -67,7 +67,7 @@ fn get_bounds(lines: &mut Lines) -> Vec<(u32, u32, u32)> {
     result
 }
 
-fn get_dest(src: u32, src_to_dst: &Vec<(u32, u32, u32)>) -> u32 {
+fn get_dest(src: u64, src_to_dst: &Vec<(u64, u64, u64)>) -> u64 {
     for bound in src_to_dst {
         if bound.0 <= src && src < bound.0 + bound.2 {
             return bound.1 + src - bound.0;
@@ -76,7 +76,7 @@ fn get_dest(src: u32, src_to_dst: &Vec<(u32, u32, u32)>) -> u32 {
     src
 }
 
-pub fn part_two(input: &str) -> Option<u32> {
+pub fn part_two(input: &str) -> Option<u64> {
     let mut lines: Lines = input.lines();
 
     let mut seeds = lines
@@ -86,9 +86,9 @@ pub fn part_two(input: &str) -> Option<u32> {
         .nth(1)
         .unwrap()
         .split(' ')
-        .map(|n| n.parse::<u32>().unwrap());
+        .map(|n| n.parse::<u64>().unwrap());
 
-    let mut seed_bounds: Vec<(u32, u32)> = Vec::new();
+    let mut seed_bounds: Vec<(u64, u64)> = Vec::new();
 
     while let Some(base) = seeds.next() {
         seed_bounds.push((base, seeds.next().unwrap()));
@@ -128,7 +128,7 @@ pub fn part_two(input: &str) -> Option<u32> {
     }
 }
 
-fn get_src(dst: u32, src_to_dst: &Vec<(u32, u32, u32)>) -> u32 {
+fn get_src(dst: u64, src_to_dst: &Vec<(u64, u64, u64)>) -> u64 {
     for bound in src_to_dst {
         if bound.1 <= dst && dst < bound.1 + bound.2 {
             return bound.0 + dst - bound.1;
