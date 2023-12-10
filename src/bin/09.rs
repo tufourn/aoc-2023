@@ -1,7 +1,7 @@
 advent_of_code::solution!(9);
 
 pub fn part_one(input: &str) -> Option<i32> {
-    Some(input.lines().map(|line| process_line_1(line)).sum())
+    Some(input.lines().map(process_line_1).sum())
 }
 
 fn process_line_1(line: &str) -> i32 {
@@ -40,7 +40,7 @@ fn process_line_1(line: &str) -> i32 {
 }
 
 pub fn part_two(input: &str) -> Option<i32> {
-    Some(input.lines().map(|line| process_line_2(line)).sum())
+    Some(input.lines().map(process_line_2).sum())
 }
 
 fn process_line_2(line: &str) -> i32 {
